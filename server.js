@@ -20,7 +20,7 @@ app.get('/user',async(req, res) => {
 });
 
 app.post('/user',async(req, res) => {
-    console.log(req);
+    console.log(req.body);
     const response = await prisma.user.create(req.body);
     res.json({
         message: 'add data sucessfuly'

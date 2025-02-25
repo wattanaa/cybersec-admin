@@ -1,8 +1,10 @@
 const { Prisma } = require('@prisma/client');
 const express = require('express');
 const {PrismaClient} = require('@prisma/client');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
 const prisma = new PrismaClient();
 
 const port = 3000

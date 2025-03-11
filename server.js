@@ -2,6 +2,11 @@ const { Prisma } = require("@prisma/client");
 const express = require("express");
 const { PrismaClient} = require("@prisma/client");
 const bodyParser = require("body-parser");
+const crypto = require('crypto-js');
+
+
+const secret_key = 'mykey';
+
 const app = express();
 app.use(bodyParser.json());
 const prisma = new PrismaClient();
@@ -24,6 +29,7 @@ app.get('/user',async(req,res) => {
         data 
     });
 });
+
 //สร้างUser
 app.post('/user', async(req,res) => {
     console.log(req.body);
@@ -31,7 +37,8 @@ app.post('/user', async(req,res) => {
     const response = await prisma.user.create({
        data: {
             username:req.body.username,
-            password:req.body.password
+            password: crypto.AES.encrypt(req.body.password, secret_key).toString()
+            //password:req.body.password
         }
     })
     res.json({

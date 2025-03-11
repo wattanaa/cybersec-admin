@@ -65,6 +65,14 @@ app.delete('/user/:id', async (req, res) => {
     }
 });
 
+app.delete('/user/search', async (req, res) => {
+    console.log(req.query);
+    const data = await prisma.$queryRaw`SELECT * FROM user WHERE username = ${req.query.username}`;
+    res.json({
+        message: 'ok',
+        data
+    });
+});
 
 app.listen(3000, () => {
     console.log('server is running on port 3000');

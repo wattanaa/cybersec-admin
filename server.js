@@ -50,13 +50,14 @@ app.post('/user', async (req, res) => {
 
 app.put('/user', async (req, res) => {
     console.log(req.body)
+    const encode = crypto.AES.encrypt(req.body.password, secretKey);
     const response = await prisma.user.update({
         where: {
             id: req.body.id,
         },
         data: {
             username: req.body.username,
-            password: req.body.password
+            password: encode.toString()
         }
     });
     if (response) {

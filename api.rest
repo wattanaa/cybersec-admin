@@ -17,5 +17,9 @@ Content-Type: application/json
     "password": "newpassword"
 }
 
+##### Search User
+GET http://localhost:3000/user/3
+Content-Type: application/json
+
 ### Delete User
 DELETE http://localhost:3000/user/4

@@ -1,41 +1,41 @@
 const { Prisma } = require("@prisma/client");
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient} = require("@prisma/client");
 const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
 const prisma = new PrismaClient();
 
-app.get('/', (req, res) => {
-    res.send('Hello world');
+app.get('/',(req,res) => {
+     res.send('Hello world');
 });
 
 //ดึงข้อมูลผู้ใช้
-app.get('/user', async (req, res) => {
+app.get('/user',async(req,res) => {
     const data = await prisma.user.findMany({
-        select: {
-            id: true,
-            username: true
+        select:{
+            id:true,
+            username:true
         }
     });
-
+   
     res.json({
-        message: 'ok',
-        data
+        message : 'ok',
+        data 
     });
 });
 //สร้างUser
-app.post('/user', async (req, res) => {
+app.post('/user', async(req,res) => {
     console.log(req.body);
     //const response = await prisma.user.create(req.body)
     const response = await prisma.user.create({
-        data: {
-            username: req.body.username,
-            password: req.body.password
+       data: {
+            username:req.body.username,
+            password:req.body.password
         }
     })
     res.json({
-        message: 'add data successfully',
+        message : 'add data successfully',
     });
 });
 //แก้ไขข้อมูล
@@ -65,15 +65,15 @@ app.delete('/user/:id', async (req, res) => {
     }
 });
 
-app.delete('/user/search', async (req, res) => {
-    console.log(req.query);
-    const data = await prisma.$queryRaw`SELECT * FROM user WHERE username = ${req.query.username}`;
+app.get('/user/search',async(req,res) => {
+    console.log(req.query.q);
+    const data = await prisma.$queryRaw`select id,username from user where username like ${req.query.q + '%'}`
     res.json({
-        message: 'ok',
-        data
-    });
+        message : 'okay',
+        data 
+     })
 });
 
-app.listen(3000, () => {
+app.listen(3000 ,()=>{
     console.log('server is running on port 3000');
 });
